@@ -1,0 +1,14 @@
+[package]
+name = "xivtool"
+version = "0.1.0"
+description = "Final Fantasy XIV asset browser and exporter"
+license = "Unlicense"
+edition = "2021"
+
+[dependencies]
+xiv = { path = "../xiv" }
+anyhow = "1.0.75"
+fallible-iterator = "0.3.0"
+clap = { version = "4.4.6", features = ["derive"] }
+serde = { version = "1.0.188", features = ["derive"] }
+csv = "1.3.0"
