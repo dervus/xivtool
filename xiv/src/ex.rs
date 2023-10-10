@@ -440,8 +440,8 @@ where
     fn lazy_exd_data(&mut self) -> Result<Rc<[u8]>, XivError> {
         assert!(!self.done);
         if self.exd_data.is_none() {
-            let exd_file = self.exd_fileptr.read()?;
-            self.exd_data = Some(exd_file.contents.into());
+            let exd_file = self.exd_fileptr.read_plain()?;
+            self.exd_data = Some(exd_file.into());
         }
         Ok(self.exd_data.as_ref().unwrap().clone())
     }
@@ -560,9 +560,9 @@ pub fn read_exh(repo: Arc<SqPack>, base_path: &str) -> Result<Exh, XivError> {
     let exh_file = repo
         .find(&exh_path)?
         .ok_or(XivError::ExhNotFound(exh_path))?
-        .read()?;
+        .read_plain()?;
 
-    Exh::read(&mut Cursor::new(&exh_file.contents)).map_err(XivError::Exh)
+    Exh::read(&mut Cursor::new(exh_file)).map_err(XivError::Exh)
 }
 
 pub fn read_exd<'de, T>(

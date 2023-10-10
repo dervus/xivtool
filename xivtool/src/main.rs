@@ -54,8 +54,7 @@ fn read_root_exl(repo: Arc<SqPack>) -> anyhow::Result<Vec<Box<str>>> {
     let root = repo
         .find(root_path)?
         .ok_or(anyhow!("{root_path} not found within SqPack repository"))?
-        .read()?
-        .contents;
+        .read_plain()?;
 
     csv::Reader::from_reader(root.as_ref())
         .records()
