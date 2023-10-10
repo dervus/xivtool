@@ -1,4 +1,4 @@
-use crate::error::XivError;
+use crate::{error::XivError, tex::Image};
 use binrw::{binread, BinRead};
 use flate2::read::DeflateDecoder;
 use std::{
@@ -111,17 +111,6 @@ fn read_model_file(mut input: impl Read + Seek) -> Result<(), XivError> {
 
     let _header = FileHeader::read(&mut input).map_err(XivError::DatFileHeader)?;
     todo!("Reading of model files is not implemented yet")
-}
-
-pub type ImageData = Box<[u8]>;
-
-pub struct Image {
-    pub format: u32,
-    pub width: u16,
-    pub height: u16,
-    pub layers: u16,
-    pub count: u16,
-    pub mipmaps: Box<[ImageData]>,
 }
 
 fn read_image_file(mut input: impl Read + Seek) -> Result<Image, XivError> {

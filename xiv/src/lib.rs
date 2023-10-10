@@ -5,3 +5,4 @@ pub mod index2;
 pub mod packid;
 pub mod sqpack;
 pub mod structs;
+pub mod tex;

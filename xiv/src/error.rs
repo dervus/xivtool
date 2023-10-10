@@ -47,6 +47,11 @@ pub enum XivError {
     #[error("Failed to deserialize .exd row ({0})")]
     ExdDeserialization(Box<str>),
 
+    #[error("Unable to export an image with format={0}, which is not implemented yet")]
+    TexFormat(u32),
+    #[error("Image's pixel data is invalid or corrupted")]
+    TexData,
+
     #[error(transparent)]
     IO(io::Error),
 }

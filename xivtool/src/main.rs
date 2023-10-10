@@ -47,6 +47,14 @@ enum ExportCommands {
         #[arg(short, long)]
         filter: Option<Box<str>>,
     },
+    /// Export .tex -> .png/.jpg/.tga
+    Tex {
+        /// Target .tex file within SqPack repository
+        path: Box<str>,
+        /// Export file format
+        #[arg(short, long, default_value = "png")]
+        format: Box<str>,
+    }
 }
 
 fn read_root_exl(repo: Arc<SqPack>) -> anyhow::Result<Vec<Box<str>>> {
@@ -120,6 +128,15 @@ fn main() -> anyhow::Result<()> {
                     Some(f) => export_one_exd(repo.clone(), &out_dir, &f),
                     None => export_all_exd(repo.clone(), &out_dir),
                 },
+                ExportCommands::Tex { path, format } => {
+                    let path = path.to_lowercase();
+                    let image = repo.find(&path)?.ok_or(anyhow!("{path} not found"))?.read_image()?;
+                    let out_path = out_dir.join(&path).with_extension(format.as_ref());
+
+                    fs::create_dir_all(out_path.parent().unwrap())?;
+                    image.export()?.save(out_path)?;
+                    Ok(())
+                }
             }
         }
     }
