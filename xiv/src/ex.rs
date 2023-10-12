@@ -102,7 +102,7 @@ impl std::fmt::Display for ValueType {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum Value {
     Bool(bool),
@@ -115,7 +115,7 @@ pub enum Value {
     UInt32(u32),
     UInt64(u64),
     Float(f32),
-    String(String),
+    String(Box<str>),
 }
 
 impl Value {
@@ -176,7 +176,7 @@ impl<'de> de::Visitor<'de> for ValueVisitor {
         Ok(Value::Float(v))
     }
     fn visit_string<E: de::Error>(self, v: String) -> Result<Self::Value, E> {
-        Ok(Value::String(v))
+        Ok(Value::String(v.into()))
     }
 }
 
